@@ -29,10 +29,10 @@ int main(void){
     LATDbits.LATD5 = 0;
     TRISB = TRISB & 0xFF00;
     TRISD = TRISD & 0xF9FF;
+    LATD = (LATD & 0xFF9F) | 0x0400;
 
     while(1){
-        LATDbits.LATD6 = !LATDbits.LATD6;
-        LATDbits.LATD5 = !LATDbits.LATD5;
+        LATD = LATD ^ 0x0060;
         segment = 1;
         for(i=0;i<=7;i++){
             display(segment);

@@ -23,21 +23,28 @@ void display(int seg){
 
 int main(void){
     unsigned char segment;
-    unsigned int i;
+    unsigned int i,j;
+    int display7Scodes[] = {0x3F, 0x06, 0x5B, 0x4F,
+                            0x66, 0x6D, 0x7D, 0x07, 
+                            0x7F, 0x6F, 0x77, 0x7C, 
+                            0x39, 0x5E, 0x79, 0x71};
     
-    LATDbits.LATD6 = 1;
-    LATDbits.LATD5 = 0;
+    LATDbits.LATD5 = 1;
+    LATDbits.LATD6 = 0;
     TRISB = TRISB & 0xFF00;
-    TRISD = TRISD & 0xF9FF;
+    segment = 0xFFFF;
 
     while(1){
         LATDbits.LATD6 = !LATDbits.LATD6;
         LATDbits.LATD5 = !LATDbits.LATD5;
-        segment = 1;
-        for(i=0;i<=7;i++){
-            display(segment);
-            delay(500);
-            segment++;    
+        for(i=0;i<=15;i++){
+            LATB = LATB & 0xFF00;
+            segment = 0xFFFF;
+            for(j=0;j<=7,j++){
+                display(display7Scodes[i] & segment);
+                segment--;
+            }
+            delay(500);   
         }
     }
     return 0;
