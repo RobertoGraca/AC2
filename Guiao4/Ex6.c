@@ -35,8 +35,6 @@ int main(void){
     segment = 0xFFFF;
 
     while(1){
-        LATDbits.LATD6 = !LATDbits.LATD6;
-        LATDbits.LATD5 = !LATDbits.LATD5;
         for(i=0;i<=15;i++){
             LATB = LATB & 0xFF00;
             segment = 0xFFFF;
