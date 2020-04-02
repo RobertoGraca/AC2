@@ -9,7 +9,7 @@ void delay(unsigned int n){
 
 int main(void){
     
-    TRISB = TRISB & 0xFF00;
+    TRISB = TRISB & 0x00FF;
     TRISD = TRISD & 0xF9FF;
     LATB = LATB & 0x00FF;
     LATD = LATD & 0xF9FF;
