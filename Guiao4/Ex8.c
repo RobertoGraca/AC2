@@ -22,13 +22,12 @@ void display(char seg){
             case 7: if(comp==0x8000)LATBbits.LATB15 = 1;break;
             default : break;
         }
-        comp = comp << 1;
+        seg = seg << 1;
     }
 }
 
 int main(void){
-    unsigned char segment;
-    unsigned int i,j,num;
+    unsigned int num;
     static const char display7Scodes[] = {0x3F, 0x06, 0x5B, 0x4F,
                                           0x66, 0x6D, 0x7D, 0x07, 
                                           0x7F, 0x6F, 0x77, 0x7C, 
@@ -38,18 +37,14 @@ int main(void){
     LATDbits.LATD6 = 1;
     LATB = LATB & 0x00FF;
     TRISB = TRISB | 0x000F;
+    TRISB = TRISB & 0x00FF;
     TRISD = TRISD & 0xFF9F;
-    segment = 0xFFFF;
 
     while(1){
-        for(i=0;i<=15;i++){
-            num = PORTB & 0x000F
-            for(j=0;j<=7,j++){
-                LATB = LATB & 0xFF00;
-                display(display7Scodes[num]);
-            }
-            delay(500);   
-        }
+        num = PORTB & 0x000F
+        LATB = LATB & 0x00FF;
+        display(display7Scodes[num]);
+        delay(500);
     }
     return 0;
 }

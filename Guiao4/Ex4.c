@@ -17,6 +17,7 @@ void display(int seg){
         case 6: LATBbits.LATB13 = 1;break;
         case 7: LATBbits.LATB14 = 1;break;
         case 8: LATBbits.LATB15 = 1;break;
+        default :LATB = 0x00FF;
         default : break;
     }
 }
@@ -36,8 +37,8 @@ int main(void){
         LATDbits.LATD6 = !LATDbits.LATD6;
         LATDbits.LATD5 = !LATDbits.LATD5;
         segment = 1;
-        for(i=0;i<=7;i++){
-            LATB = LATB & 0x00FF;
+        for(i=0;i<10;i++){
+            LATB = 0x00FF;
             display(segment);
             delay(500);
             segment++;    

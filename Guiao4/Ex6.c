@@ -40,10 +40,8 @@ int main(void){
 
     while(1){
         for(i=0;i<=15;i++){
-            for(j=0;j<=7,j++){
-                LATB = LATB & 0xFF00;
-                display(display7Scodes[i]);
-            }
+            LATB = LATB & 0xFF00;
+            display(display7Scodes[i]);
             delay(500);   
         }
     }
