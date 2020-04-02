@@ -8,21 +8,21 @@ void delay(unsigned int n){
 }
 
 void display(char seg){
-    unsigned int i,comp = 0;
+    unsigned int i,comp = 0,seg2 = seg;
     for(i=0;i<8;i++){
-        comp = seg & 0x8000;
+        comp = seg2 & 0x80;
         switch(i){
-            case 0: if(comp==0x8000)LATBbits.LATB8  = 1;break;
-            case 1: if(comp==0x8000)LATBbits.LATB9  = 1;break;
-            case 2: if(comp==0x8000)LATBbits.LATB10 = 1;break;
-            case 3: if(comp==0x8000)LATBbits.LATB11 = 1;break;
-            case 4: if(comp==0x8000)LATBbits.LATB12 = 1;break;
-            case 5: if(comp==0x8000)LATBbits.LATB13 = 1;break;
-            case 6: if(comp==0x8000)LATBbits.LATB14 = 1;break;
-            case 7: if(comp==0x8000)LATBbits.LATB15 = 1;break;
+            case 0: if(comp==0x80)LATBbits.LATB8  = 1;break;
+            case 1: if(comp==0x80)LATBbits.LATB9  = 1;break;
+            case 2: if(comp==0x80)LATBbits.LATB10 = 1;break;
+            case 3: if(comp==0x80)LATBbits.LATB11 = 1;break;
+            case 4: if(comp==0x80)LATBbits.LATB12 = 1;break;
+            case 5: if(comp==0x80)LATBbits.LATB13 = 1;break;
+            case 6: if(comp==0x80)LATBbits.LATB14 = 1;break;
+            case 7: if(comp==0x80)LATBbits.LATB15 = 1;break;
             default : break;
         }
-        seg = seg << 1;
+        seg2 = seg2 << 1;
     }
 }
 
@@ -41,7 +41,7 @@ int main(void){
     TRISD = TRISD & 0xFF9F;
 
     while(1){
-        num = PORTB & 0x000F
+        num = PORTB & 0x000F;
         LATB = LATB & 0x00FF;
         display(display7Scodes[num]);
         delay(500);
