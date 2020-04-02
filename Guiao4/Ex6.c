@@ -27,7 +27,6 @@ void display(int seg){
 }
 
 int main(void){
-    unsigned char segment;
     unsigned int i,j;
     int display7Scodes[] = {0x3F, 0x06, 0x5B, 0x4F,
                             0x66, 0x6D, 0x7D, 0x07, 
@@ -36,9 +35,8 @@ int main(void){
     
     LATDbits.LATD5 = 1;
     LATDbits.LATD6 = 0;
-    LATB = LATB & 0xFF00;
-    TRISB = TRISB & 0xFF00;
-    segment = 0xFFFF;
+    LATB = LATB & 0x00FF;
+    TRISB = TRISB & 0x00FF;
 
     while(1){
         for(i=0;i<=15;i++){

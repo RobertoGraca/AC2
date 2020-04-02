@@ -37,10 +37,8 @@ int main(void){
     LATDbits.LATD5 = 0;
     LATDbits.LATD6 = 1;
     LATB = LATB & 0x00FF;
-    LATD = LATD & 0xF9FF;
-    TRISB = TRISB & 0xFF00;
-    TRISB = TRISB | 0xF000;
-    TRISD = TRISD & 0xF9FF;
+    TRISB = TRISB | 0x000F;
+    TRISD = TRISD & 0xFF9F;
     segment = 0xFFFF;
 
     while(1){
