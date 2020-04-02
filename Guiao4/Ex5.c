@@ -27,6 +27,8 @@ int main(void){
     
     LATDbits.LATD6 = 1;
     LATDbits.LATD5 = 0;
+    LATB = LATB & 0x00FF;
+    LATD = LATD & 0xF9FF;
     TRISB = TRISB & 0xFF00;
     TRISD = TRISD & 0xF9FF;
     LATD = (LATD & 0xFF9F) | 0x0400;

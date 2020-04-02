@@ -29,12 +29,15 @@ int main(void){
     LATDbits.LATD5 = 0;
     TRISB = TRISB & 0xFF00;
     TRISD = TRISD & 0xF9FF;
+    LATB = LATB & 0x00FF;
+    LATD = LATD & 0xF9FF;
 
     while(1){
         LATDbits.LATD6 = !LATDbits.LATD6;
         LATDbits.LATD5 = !LATDbits.LATD5;
         segment = 1;
         for(i=0;i<=7;i++){
+            LATB = LATB & 0x00FF;
             display(segment);
             delay(500);
             segment++;    

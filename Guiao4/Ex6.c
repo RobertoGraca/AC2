@@ -8,16 +8,21 @@ void delay(unsigned int n){
 }
 
 void display(int seg){
-    switch(seg){
-        case 1: LATBbits.LATB8  = 1;break;
-        case 2: LATBbits.LATB9  = 1;break;
-        case 3: LATBbits.LATB10 = 1;break;
-        case 4: LATBbits.LATB11 = 1;break;
-        case 5: LATBbits.LATB12 = 1;break;
-        case 6: LATBbits.LATB13 = 1;break;
-        case 7: LATBbits.LATB14 = 1;break;
-        case 8: LATBbits.LATB15 = 1;break;
-        default : break;
+    unsigned int i,comp = 0;
+    for(i=0;i<8;i++){
+        comp = seg & 0x8000;
+        switch(i){
+            case 0: if(comp==0x8000)LATBbits.LATB8  = 1;break;
+            case 1: if(comp==0x8000)LATBbits.LATB9  = 1;break;
+            case 2: if(comp==0x8000)LATBbits.LATB10 = 1;break;
+            case 3: if(comp==0x8000)LATBbits.LATB11 = 1;break;
+            case 4: if(comp==0x8000)LATBbits.LATB12 = 1;break;
+            case 5: if(comp==0x8000)LATBbits.LATB13 = 1;break;
+            case 6: if(comp==0x8000)LATBbits.LATB14 = 1;break;
+            case 7: if(comp==0x8000)LATBbits.LATB15 = 1;break;
+            default : break;
+        }
+        comp = comp << 1;
     }
 }
 
@@ -31,16 +36,15 @@ int main(void){
     
     LATDbits.LATD5 = 1;
     LATDbits.LATD6 = 0;
+    LATB = LATB & 0xFF00;
     TRISB = TRISB & 0xFF00;
     segment = 0xFFFF;
 
     while(1){
         for(i=0;i<=15;i++){
             LATB = LATB & 0xFF00;
-            segment = 0xFFFF;
             for(j=0;j<=7,j++){
-                display(display7Scodes[i] & segment);
-                segment--;
+                display(display7Scodes[i]);
             }
             delay(500);   
         }
