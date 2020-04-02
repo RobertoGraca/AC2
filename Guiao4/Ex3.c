@@ -10,9 +10,9 @@ void delay(unsigned int n){
 int main(void){
     
     TRISB = TRISB & 0x00FF;
-    TRISD = TRISD & 0xF9FF;
+    TRISD = TRISD & 0xFF9F;
     LATB = LATB & 0x00FF;
-    LATD = LATD & 0xF9FF;
+    LATD = LATD & 0xFF9F;
     LATDbits.LATD5 = 1;
     LATDbits.LATD6 = 0;
 
