@@ -36,7 +36,6 @@ int main(void){
                             break;
             case '.':       LATBbits.LATB15 = 1;//((LATDbits.LATD5==1) & (LATDbits.LATD6==0))?1:!((LATDbits.LATD5==0) & (LATDbits.LATD6==1));
                             break;
-            default: continue;
         }
     }
     return 0;
