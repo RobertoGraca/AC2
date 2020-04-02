@@ -7,7 +7,7 @@ void delay(unsigned int n){
     }
 }
 
-void display(int seg){
+void display(char seg){
     unsigned int i,comp = 0;
     for(i=0;i<8;i++){
         comp = seg & 0x8000;
@@ -28,23 +28,27 @@ void display(int seg){
 
 int main(void){
     unsigned char segment;
-    unsigned int i,j;
-    int display7Scodes[] = {0x3F, 0x06, 0x5B, 0x4F,
-                            0x66, 0x6D, 0x7D, 0x07, 
-                            0x7F, 0x6F, 0x77, 0x7C, 
-                            0x39, 0x5E, 0x79, 0x71};
+    unsigned int i,j,num;
+    static const char display7Scodes[] = {0x3F, 0x06, 0x5B, 0x4F,
+                                          0x66, 0x6D, 0x7D, 0x07, 
+                                          0x7F, 0x6F, 0x77, 0x7C, 
+                                          0x39, 0x5E, 0x79, 0x71};
     
-    LATDbits.LATD5 = 1;
-    LATDbits.LATD6 = 0;
-    LATB = LATB & 0xFF00;
+    LATDbits.LATD5 = 0;
+    LATDbits.LATD6 = 1;
+    LATB = LATB & 0x00FF;
+    LATD = LATD & 0xF9FF;
     TRISB = TRISB & 0xFF00;
+    TRISB = TRISB | 0xF000;
+    TRISD = TRISD & 0xF9FF;
     segment = 0xFFFF;
 
     while(1){
         for(i=0;i<=15;i++){
+            num = PORTB & 0x000F
             for(j=0;j<=7,j++){
                 LATB = LATB & 0xFF00;
-                display(display7Scodes[i]);
+                display(display7Scodes[num]);
             }
             delay(500);   
         }
