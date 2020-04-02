@@ -11,7 +11,8 @@ int main(void){
     
     TRISB = TRISB & 0xFF00;
     TRISD = TRISD & 0xF9FF;
-
+    LATB = LATB & 0x00FF;
+    LATD = LATD & 0xF9FF;
     LATDbits.LATD5 = 1;
     LATDbits.LATD6 = 0;
 
