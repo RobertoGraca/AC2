@@ -17,6 +17,7 @@ int main(void){
     LATDbits.LATD6 = 0;
 
     while(1){
+        LATB = LATB & 0x00FF;
         char c = getChar();
         switch(c){
             case 'a' | 'A': LATBbits.LATB8  = 1;//((LATDbits.LATD5==1) & (LATDbits.LATD6==0))?1:!((LATDbits.LATD5==0) & (LATDbits.LATD6==1));
