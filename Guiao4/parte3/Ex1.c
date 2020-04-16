@@ -69,7 +69,7 @@ int main(void){
             send2displays(toBCD(value));
             delay(10);
         }
-        while(++i<100);
+        while(++num<100);
         value = (value+1)%60;
     }
     return 0;
