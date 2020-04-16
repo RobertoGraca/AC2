@@ -11,12 +11,12 @@ void delay(unsigned int ms){
 
 void send2displays(){
     unsigned char value;
-    unsigned int i;
+    unsigned int i=0;
     static const char display7Scodes[] = {0x3F, 0x06, 0x5B, 0x4F,
                                           0x66, 0x6D, 0x7D, 0x07, 
                                           0x7F, 0x6F, 0x77, 0x7C, 
                                           0x39, 0x5E, 0x79, 0x71};
-    while(1){
+    while(i<1000000){
         LATDbits.LATD5 = 1;
         LATDbits.LATD6 = 0;
         LATB = (LATB & 0x00FF) | (display7Scodes[(value >> 4)] << 8);
@@ -25,6 +25,7 @@ void send2displays(){
         LATD = LATD ^ 0x0060;
         LATB = (LATB & 0x00FF) | (display7Scodes[value & 0x0F] << 8);
         delay(20);
+        i++;
     }
 }
 
