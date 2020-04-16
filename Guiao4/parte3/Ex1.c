@@ -1,8 +1,5 @@
 #include <detpic32.h>
 
-
-static int dh, dl;
-
 void delay(unsigned int ms){
     for(;ms>0;ms--){
         resetCoreTimer();
@@ -24,13 +21,13 @@ void send2displays( unsigned char value){
         LATDbits.LATD5 = 1;
         LATDbits.LATD6 = 0;
         LATB = (LATB & 0x00FF) | (display7Scodes[digit_low] << 8);
-        if(value%2 != 1)LATBbits.LATB15 = 1;
+        if(value%2 == 1)LATBbits.LATB15 = 1;
     }
     else{
         LATDbits.LATD5 = 0;
         LATDbits.LATD6 = 1;
         LATB = (LATB & 0x00FF) | (display7Scodes[digit_high] << 8);
-        if(value%2 != 0)LATBbits.LATB15 = 1;
+        if(value%2 == 0)LATBbits.LATB15 = 1;
     }
     displayFlag = !displayFlag;
 }
@@ -42,11 +39,12 @@ unsigned char toBCD(unsigned char value){
 void pisca(){
     int i=0;
     do{
+        LATB = (LATB & 0x00FF) | 0x3F00;
         LATDbits.LATD5 = 1;
         LATDbits.LATD6 = 1;
-        LATB = (LATB & 0x00FF) | 0x3F00;
         delay(500);
-        LATB = LATB & 0x00FF;
+        LATDbits.LATD5 = 0;
+        LATDbits.LATD6 = 0;
         delay(500);
     }
     while(++i<5);
@@ -65,7 +63,7 @@ int main(void){
     num = 0;
     while(1){
         do{
-            if(value==0)pisca();
+            if(value==0){pisca();value++}
             send2displays(toBCD(value));
             delay(10);
         }
