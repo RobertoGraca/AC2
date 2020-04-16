@@ -1,4 +1,5 @@
 #include <detpic32.h>
+#include "elapsed_time.h"
 
 static int dh, dl;
 
@@ -16,7 +17,8 @@ void send2displays( unsigned char value){
                                           0x66, 0x6D, 0x7D, 0x07, 
                                           0x7F, 0x6F, 0x77, 0x7C, 
                                           0x39, 0x5E, 0x79, 0x71};
-    while(1){
+    double time0 = elapsed_time(),time1;
+    while(time1-time0<1){
         LATDbits.LATD5 = 1;
         LATDbits.LATD6 = 0;
         LATB = (LATB & 0x00FF) | (display7Scodes[(value >> 4)] << 8);
@@ -26,6 +28,7 @@ void send2displays( unsigned char value){
         LATDbits.LATD6 = 1;
         LATB = (LATB & 0x00FF) | (display7Scodes[value & 0x0F] << 8);
         delay(20);
+        time1 = elapsed_time();
     }
 }
 
