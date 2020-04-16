@@ -50,7 +50,7 @@ int main(void){
     while(1){
         num++;
         send2displays(value);
-        delay(50);
+        delay(10);
         if(num%4==0)value++;
     }
     return 0;
