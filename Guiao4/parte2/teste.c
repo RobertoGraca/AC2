@@ -12,7 +12,7 @@ int main(void){
 
     while(1){
         printf("%5d\n",c);
-        c++;
+        c = !c;
         delay();
     }
     return 0;

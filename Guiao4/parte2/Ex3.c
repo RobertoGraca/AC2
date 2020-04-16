@@ -20,7 +20,7 @@ void send2displays( unsigned char value){
     static char displayFlag = 0;
     int digit_low = value >> 4, digit_high = value & 0x0F;
 
-    if(displayFlag = 0){
+    if(displayFlag == 0){
         LATDbits.LATD5 = 1;
         LATDbits.LATD6 = 0;
         LATB = (LATB & 0x00FF) | (display7Scodes[digit_low] << 8);
