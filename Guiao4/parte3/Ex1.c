@@ -25,14 +25,12 @@ void send2displays( unsigned char value){
         LATDbits.LATD6 = 0;
         LATB = (LATB & 0x00FF) | (display7Scodes[digit_low] << 8);
         if(value%2 != 1)LATBbits.LATB15 = 1;
-        delay(20);
     }
     else{
         LATDbits.LATD5 = 0;
         LATDbits.LATD6 = 1;
         LATB = (LATB & 0x00FF) | (display7Scodes[digit_high] << 8);
         if(value%2 != 0)LATBbits.LATB15 = 1;
-        delay(20);
     }
     displayFlag = !displayFlag;
 }
