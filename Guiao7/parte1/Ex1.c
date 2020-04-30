@@ -9,9 +9,9 @@ void delay(unsigned int n){
 
 int main(void){
     T3CONbits.TCKPS = 7;
-    PR3 = 39063;
+    PR3 = 39062;
     TMR3 = 0;
-    T2CONbits.TON = 1;
+    T3CONbits.TON = 1;
     
     while(1){
         while(IFS0.T3IF == 0);
@@ -21,10 +21,6 @@ int main(void){
     return 0;
 }
 
-2 = 20000000/(2^n * (PR3 + 1))
-1 = 10000000/(2^n * (PR3 + 1))
-10000000 = 256 * (PR3 + 1)
-10000000/256 - 256/156 = PR3 
-PR3 = 9999744/256
+
 
 

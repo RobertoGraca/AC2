@@ -10,7 +10,7 @@ void delay(unsigned int n){
 }
 
 // Interrupt Handler    
-void _int_(27) isr_adc(void)  // Replace VECTOR by the A/D vector                                     
+void _int_(27) isr_adc(void)      // Replace VECTOR by the A/D vector                                     
                                   // number - see "PIC32 family data                                      
                                   // sheet" (pages 74-76)    
 {                                 // ISR actions       
@@ -27,6 +27,16 @@ void _int_(27) isr_adc(void)  // Replace VECTOR by the A/D vector
     IFS1bits.AD1IF = 0;           // Reset AD1IF flag    
 }
 
+void _int_(4) isr_T1(void){
+    AD1CON1bits.ASAM = 1;
+    IFS0bits.T1IF = 0;
+}
+
+void _int_(12) isr_T3(void){
+    send2displays(voltage);
+    IFS0bits.T3IF = 0;
+}
+
 void send2displays( unsigned char value){
    
     unsigned int i=0;
@@ -36,25 +46,23 @@ void send2displays( unsigned char value){
                                           0x39, 0x5E, 0x79, 0x71};
     static char displayFlag = 0;
     int digit_low = value >> 4, digit_high = value & 0x0F;
-
-    if(displayFlag == 0){
-        LATDbits.LATD5 = 1;
-        LATDbits.LATD6 = 0;
-        LATB = (LATB & 0x00FF) | (display7Scodes[digit_low] << 8);
-        if(digit_high != 0)LATBbits.LATB15 = 1;
+    while(PORTBbits.PORTB0 == 1 && PORTBbits.PORTB1 == 0){
+        if(displayFlag == 0){
+            LATDbits.LATD5 = 1;
+            LATDbits.LATD6 = 0;
+            LATB = (LATB & 0x00FF) | (display7Scodes[digit_low] << 8);
+            if(digit_high != 0)LATBbits.LATB15 = 1;
+        }
+        else{
+            LATDbits.LATD5 = 0;
+            LATDbits.LATD6 = 1;
+            LATB = (LATB & 0x00FF) | (display7Scodes[digit_high] << 8);
+        }
+        displayFlag = !displayFlag;
     }
-    else{
-        LATDbits.LATD5 = 0;
-        LATDbits.LATD6 = 1;
-        LATB = (LATB & 0x00FF) | (display7Scodes[digit_high] << 8);
-    }
-    displayFlag = !displayFlag;
 }
 
-int main(void){
-    TRISB = TRISB & 0x00FF;
-    TRISD = TRISD & 0xFF9F;
-
+void configureAll(){
     TRISBbits.TRISB4 = 1;     // RBx digital output disconnected
     AD1PCFGbits.PCFG4= 0;     // RBx configured as analog input (AN4)
     AD1CON1bits.SSRC = 7;     // Conversion trigger selection bits: in this
@@ -73,23 +81,44 @@ int main(void){
                               //  This must the last command of the A/D
                               //  configuration sequence
     IPC6bits.AD1IP = 2;       // configure priority of A/D interrupts
-
-    IFS1bits.AD1IF = 0;       // clear A/D interrupt 
     
     IEC1bits.AD1IE = 1;       // enable A/D interrupts
 
+    T3CONbits.TCKPS = 5;
+    PR3 = 6249;            
+    TMR3 = 0;
+    
+    
+    IPC2bits.T3IP = 2;
+    IEC0bits.T3IE = 1;
+
+    T1CONbits.TCKPS = 7;
+    PR1 = 19500;            
+    TMR1 = 0;
+    
+    
+    IPC2bits.T1IP = 2;
+    IEC0bits.T1IE = 1;
+
+    T3CONbits.TON = 1;
+
+    T1CONbits.TON = 1;
+}
+
+int main(void){
+    TRISB = TRISB & 0x00FF;
+    TRISB = TRISB | 0x0003;
+    TRISD = TRISD & 0xFF9F;
+
+    configureAll();
+
+    IFS1bits.AD1IF = 0;       // clear A/D interrupt 
+    IFS0bits.T3IF = 0;
+    IFS0bits.T1IF = 0;
+
     EnableInterrupts();
 
-    unsigned int cnt = 0;
-
-    while(1){
-        if(cnt % 25 == 0){
-            AD1CON1bits.ASAM = 1;
-        }
-        send2displays(voltage);
-        cnt++;
-        delay(10);
-    }
+    while(1);
     
     return 0;
 }
